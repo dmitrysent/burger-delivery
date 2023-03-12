@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import Count from "../../Count/Count";
 import classes from "./Goods.module.scss";
 
@@ -6,6 +6,8 @@ interface OrderProps {
     title: string
 }
 const Goods = ({title}: OrderProps) => {
+
+
     return (
         <li className={classes.item}>
             <img className={classes.image} src="../burger-delivery/src/assets/img/burger_1.jpg"
@@ -21,7 +23,7 @@ const Goods = ({title}: OrderProps) => {
                 </p>
             </div>
 
-            <Count />
+            <Count initCount={1} />
         </li>
     );
 };

@@ -16,6 +16,11 @@
   width: 8px;
 }
 
+.minus:disabled {
+  cursor: auto;
+  opacity: 0.5;
+}
+
 .plus {
   width: 8px;
 }

@@ -2,40 +2,45 @@ import React from 'react';
 import classes from './Navigation.module.css'
 import Container from "../Container/Container";
 import cn from "classnames";
+import {useAppDispatch, useAppSelector} from "../../store/hooks";
+import {categorySelector, changeCategory} from "../../store/category/categorySlice";
 
 const Navigation = () => {
+
+
+    const {category, activeCategory} = useAppSelector(categorySelector)
+
+    const dispatch = useAppDispatch()
+
+    const handlerCategory = (index: number): void => {
+        dispatch(changeCategory({
+            indexCategory: index
+        }))
+    }
+
     return (
         <nav className={classes["navigation"]}>
             <Container className={classes.container}>
                 <ul className={classes.list}>
-                    <li className={classes.item}>
-                        <button className={cn(classes.button, classes.button_burger, classes.button_active)}>Бургеры
-                        </button>
-                    </li>
-                    <li className={classes.item}>
-                        <button className={cn(classes.button, classes.button_snack)}>Закуски</button>
-                    </li>
-                    <li className={classes.item}>
-                        <button className={cn(classes.button, classes.button_hotdog)}>Хот-доги</button>
-                    </li>
-                    <li className={classes.item}>
-                        <button className={cn(classes.button, classes.button_combo)}>Комбо</button>
-                    </li>
-                    <li className={classes.item}>
-                        <button className={cn(classes.button, classes.button_shawarma)}>Шаурма</button>
-                    </li>
-                    <li className={classes.item}>
-                        <button className={cn(classes.button, classes.button_pizza)}>Пицца</button>
-                    </li>
-                    <li className={classes.item}>
-                        <button className={cn(classes.button, classes.button_wok)}>Вок</button>
-                    </li>
-                    <li className={classes.item}>
-                        <button className={cn(classes.button, classes.button_dessert)}>Десерты</button>
-                    </li>
-                    <li className={classes.item}>
-                        <button className={cn(classes.button, classes.button_sauce)}>Соусы</button>
-                    </li>
+
+                    {
+                        category.map((item, index) => (
+                            <li
+                                key={item.title}
+                                onClick={() => handlerCategory(index)}
+                                className={classes.item}
+                            >
+                                <button className={cn(classes.button,
+                                    index === activeCategory ? classes.button_active : '')}
+                                    style={{ backgroundImage: `url(${item.image}`}}
+                                >
+                                    {item.rus}
+
+                                </button>
+                            </li>
+                        ))
+                    }
+
                 </ul>
             </Container>
         </nav>

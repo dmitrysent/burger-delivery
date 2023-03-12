@@ -3,6 +3,9 @@ import Order from "../Order/Order";
 import Container from "../Container/Container";
 import classes from "./Catalog.module.css";
 import Product from "./Product/Product";
+import {useSelector} from "react-redux";
+import { categorySelector} from "../../store/category/categorySlice";
+import {useAppSelector} from "../../store/hooks";
 
 const goodsList = [
     { title: 'Мясная бомба' },
@@ -14,6 +17,8 @@ const goodsList = [
 ];
 
 const Catalog = () => {
+
+
     return (
         <section className={classes.catalog}>
             <Container className={classes.container}>
@@ -26,7 +31,7 @@ const Catalog = () => {
                         <ul className={classes.list}>
                             {
                                 goodsList.map(item => (
-                                    <li className={classes.item}>
+                                    <li key={item.title} className={classes.item}>
                                         <Product title={item.title} />
                                     </li>
                                 ))
