@@ -1,23 +1,31 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import Order from "../Order/Order";
 import Container from "../Container/Container";
 import classes from "./Catalog.module.css";
 import Product from "./Product/Product";
 import {useSelector} from "react-redux";
 import { categorySelector} from "../../store/category/categorySlice";
-import {useAppSelector} from "../../store/hooks";
-
-const goodsList = [
-    { title: 'Мясная бомба' },
-    { title: 'Супер сырный' },
-    { title: 'Сытный' },
-    { title: 'Итальянский' },
-    { title: 'Вечная классика' },
-    { title: 'Тяжелый удар' },
-];
+import {useAppDispatch, useAppSelector} from "../../store/hooks";
+import {Products, productsRequestAsync, productsSelector} from "../../store/products/productsSlice";
 
 const Catalog = () => {
 
+    const { products } = useAppSelector(productsSelector)
+    const { category, activeCategory } = useAppSelector(categorySelector)
+
+    const dispatch = useAppDispatch()
+
+    useEffect(() => {
+
+        if (category.length) {
+            const activeCategoryTitle = category[activeCategory]?.title
+            dispatch(productsRequestAsync(activeCategoryTitle))
+        }
+    }, [category, activeCategory])
+
+    if (!products) {
+        return <p>Загрузка товаров...</p>
+    }
 
     return (
         <section className={classes.catalog}>
@@ -25,14 +33,14 @@ const Catalog = () => {
                 <Order />
 
                 <div className={classes.wrapper}>
-                    <h2 className={classes.title}>Бургеры</h2>
+                    <h2 className={classes.title}>{category[activeCategory]?.rus}</h2>
 
                     <div className={classes.wrap_list}>
                         <ul className={classes.list}>
                             {
-                                goodsList.map(item => (
-                                    <li key={item.title} className={classes.item}>
-                                        <Product title={item.title} />
+                                products.map((item: Products) => (
+                                    <li key={item.id} className={classes.item}>
+                                        <Product item={item} />
                                     </li>
                                 ))
                             }
